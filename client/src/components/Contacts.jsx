@@ -2,19 +2,21 @@ import React, {useState, useEffect } from 'react'
 import styled from 'styled-components';
 import Logo from "../assets/logo.svg";
 
-export default function Contacts({contacts, currentUser}) {
+export default function Contacts({contacts, currentUser, changeChat}) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
   useEffect(()=>{
-    console.log(contacts);
     if(currentUser) {
       setCurrentUserImage(currentUser.avatarImage);
       setCurrentUserName(currentUser.username);
     }
   }, [currentUser]);
 
-  const changeCurrentChat = (index, contact) => {};
+  const changeCurrentChat = (index, contact) => {
+    setCurrentSelected(index);
+    changeChat(contact);
+  };
   return (
     <>
       {
@@ -29,7 +31,9 @@ export default function Contacts({contacts, currentUser}) {
                 contacts.map((contact, index)=>{
                   return (
                     <div 
-                      className={`contact ${index === currentSelected ? "selected" : ""}`} key={index}
+                      className={`contact ${index === currentSelected ? "selected" : ""}`} 
+                      key={index}
+                      onClick={()=>changeCurrentChat(index,contact)}
                     >
                       <div className="avatar">
                         <img src={`data:image/svg+xml;base64,${contact.avatarImage}`} alt="avatar" />
@@ -42,6 +46,7 @@ export default function Contacts({contacts, currentUser}) {
                   )
                 })
               }
+              
             </div>
 
             <div className="current-user">
@@ -62,7 +67,7 @@ export default function Contacts({contacts, currentUser}) {
 
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 10% 75% 15%:
+  grid-template-rows: 10% 75% 15%;
   overflow: hidden;
   background-color: #080420;
   .brand {
@@ -75,7 +80,7 @@ const Container = styled.div`
     }
     h3 {
       color: white;
-      text-tranform: uppercase;
+      text-transform: uppercase;
     }
   }
 
@@ -83,9 +88,16 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     overflow: auto;
     gap: 0.8rem;
+    &::-webkit-scrollbar{
+      width: 0.2rem;
+      &-thumb {
+        background-color: #ffffff39;
+        width: 0.1rem;
+        border-radius: 1rem;
+      }
+    }
 
     .contact {
       background-color: #ffffff39;
@@ -111,7 +123,7 @@ const Container = styled.div`
     }
 
     .selected {
-      background-color: #9186f3;
+      background-color: #9a86f3;
     }
   }
   .current-user {
@@ -129,6 +141,14 @@ const Container = styled.div`
     .username{
       h2{
         color: white;
+      }
+    }
+    @media screen and (min-width: 720px) and (max-width: 1080px) {
+      gap: 0.5rem;
+      .username {
+        h2 {
+          font-size: 1rem;
+        }
       }
     }
   }
