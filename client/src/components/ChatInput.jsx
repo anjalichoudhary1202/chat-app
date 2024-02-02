@@ -4,30 +4,32 @@ import Picker from 'emoji-picker-react';
 import {IoMdSend} from 'react-icons/io';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 
-export default function ChatInput() {
+export default function ChatInput({handleSendMsg}) {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState('');
   
   const handleEmojiPickerHideShow = () => {
     setShowEmojiPicker(!showEmojiPicker);
   };
 
-  const handleEmojiClick = (event, emoji) => {
-    let message = msg;
-    message += emoji.emoji;
-    setMsg(message);
-  };
+  const sendChat= (event) => {
+    event.preventDefault();
+    if(msg.length > 0) {
+      handleSendMsg(msg);
+      setMsg('');
+    }
+  }
   return (
     <Container>
       <div className="button-container">
         <div className="emoji">
           <BsEmojiSmileFill onClick={handleEmojiPickerHideShow} />
-          {
-            showEmojiPicker && <Picker className='emoji-picker-react' onEmojiClick={handleEmojiClick} />
-          }
+        {
+          showEmojiPicker && <Picker className='emoji-picker-react' onEmojiClick={(emojiObject)=> setMsg((prevMsg)=> prevMsg + emojiObject.emoji)} />
+        }
         </div>
       </div>
-      <form className='input-container'>
+      <form className='input-container' onSubmit={(event)=> sendChat(event)}>
         <input 
           type='text' 
           placeholder='type your message here' 
@@ -49,6 +51,10 @@ const Container = styled.div`
   background-color: #080420;
   padding:0 2rem;
   padding-bottom: 0.3rem;
+  @media screen and (min-width: 720px) and (max-width: 1080px) {
+    padding: 0 1rem;   
+    gap: 1rem;
+  }
   .button-container {
     display: flex;
     align-items: center;
@@ -61,12 +67,24 @@ const Container = styled.div`
         color: #ffff00c8;
         cursor: pointer;
       }
-      .emoji-picker-react {
+      .epr-main {
         position: absolute;
         top: -480px;
         background-color: #080420;
         box-shadow: 0 5px 10px #9a86f3;
         border-color: #9a86f3;
+        
+        .epr_-quhs3c {
+          background-color:transparent;
+          border-color: #9186f3;
+        }
+        .epr-body::-webkit-scrollbar {
+          background-color: #080420;
+          width: 5px;
+          &-thumb {
+            background-color: #9a86f3;
+          }
+        }
       }
     }
   }
@@ -79,7 +97,7 @@ const Container = styled.div`
     background-color: #ffffff34;
     input {
       width: 90%;
-      height: 60%;
+      /* height: 60%; */
       background-color: transparent;
       color: white;
       border: none;
@@ -100,6 +118,12 @@ const Container = styled.div`
       align-items: center;
       background-color: #9a86f3;
       border: none;
+      @media screen and (min-width: 720px) and (max-width: 1080px) {
+        padding: 0.3rem 1rem;
+        svg {
+          font-size: 1rem;
+        }
+      }
       svg {
         font-size: 2rem;
         color: white;
