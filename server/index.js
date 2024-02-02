@@ -42,9 +42,10 @@ io.on("connection", (socket)=>{
     });
 
     socket.on("send-msg", (data)=>{
+        console.log({data});
         const sendUserSocket = onlineUsers.get(data.to);
         if(sendUserSocket) {
-            socket.to(sendUserSocket).emit("msg-receive", data.message);
+            socket.to(sendUserSocket).emit("msg-receive", data.msg);
         }
     });
 });
