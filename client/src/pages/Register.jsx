@@ -180,7 +180,7 @@ const FormContainer = styled.div`
     span{
       padding: 0 1rem;
       color: white;
-      text-tranform: uppercase;
+      text-transform: uppercase;
       a {
         color: #4e0eff;
         text-decoration: none;

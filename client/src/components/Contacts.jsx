@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Logo from "../assets/logo.svg";
 
 export default function Contacts({contacts, currentUser, changeChat}) {
+ 
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
@@ -23,7 +24,7 @@ export default function Contacts({contacts, currentUser, changeChat}) {
         currentUserImage && currentUserName && (
           <Container>
             <div className="brand">
-              <img src={Logo} alt="logo" />
+              <img src={Logo} alt="logo"/>
               <h3>connectify</h3>
             </div>
             <div className="contacts">
